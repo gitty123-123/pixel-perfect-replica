@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Coffee, GlassWater, Ruler, Palette, MapPin, Factory, LayoutGrid, Thermometer, Sparkles, MessagesSquare } from "lucide-react";
+import { ArrowRight, Coffee, Ruler, Palette, MapPin, Factory, LayoutGrid, Thermometer, Sparkles, MessagesSquare } from "lucide-react";
 import hero from "@/assets/hero.jpg";
 import manufacturing from "@/assets/manufacturing.jpg";
 import branding from "@/assets/branding.jpg";
@@ -234,4 +234,3 @@ function AppTile({ img, title, className, tall }: { img: string; title: string; 
   );
 }
 
-export { GlassWater };

@@ -8,7 +8,7 @@ export function Reveal({ children, className, delay = 0, as: Tag = "div" }: { ch
     if (!el) return;
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) {
+        if (e?.isIntersecting) {
           el.classList.add("is-visible");
           io.disconnect();
         }
@@ -25,7 +25,7 @@ export function Reveal({ children, className, delay = 0, as: Tag = "div" }: { ch
   );
 }
 
-export function Eyebrow({ children, className, center }: { children: ReactNode; className?: string; center?: boolean }) {
+export function Eyebrow({ children, className, center }: { children: ReactNode; className?: string | undefined; center?: boolean | undefined }) {
   return (
     <div className={cn("flex items-center gap-4", center && "justify-center", className)}>
       <span className="h-px w-10 bg-primary" />
@@ -35,7 +35,7 @@ export function Eyebrow({ children, className, center }: { children: ReactNode; 
   );
 }
 
-export function SectionHeading({ eyebrow, title, intro, center, className }: { eyebrow: string; title: ReactNode; intro?: ReactNode; center?: boolean; className?: string }) {
+export function SectionHeading({ eyebrow, title, intro, center, className }: { eyebrow: string; title: ReactNode; intro?: ReactNode; center?: boolean | undefined; className?: string | undefined }) {
   return (
     <Reveal className={cn("max-w-2xl", center && "mx-auto text-center", className)}>
       <Eyebrow center={center}>{eyebrow}</Eyebrow>
