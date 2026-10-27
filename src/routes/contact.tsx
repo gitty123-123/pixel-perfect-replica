@@ -20,11 +20,21 @@ export const Route = createFileRoute("/contact")({
 type Errors = Record<string, string>;
 const REQUIRED = ["name", "email", "product", "beverage"];
 
-export function validateEnquiry(data: Record<string, string>): Errors {
+function validateEnquiry(data: Record<string, string>): Errors {
   const e: Errors = {};
   for (const k of REQUIRED) if (!data[k]?.trim()) e[k] = "This field is required.";
   if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Please enter a valid email address.";
   return e;
+}
+
+function F({ name, label, required, errors, children }: { name: string; label: string; required?: boolean; errors: Errors; children: React.ReactNode }) {
+  return (
+    <label className="block text-sm">
+      <span className="font-medium">{label}{required && <span className="text-primary-deep"> *</span>}</span>
+      {children}
+      {errors[name] && <span className="mt-1 block text-xs text-destructive">{errors[name]}</span>}
+    </label>
+  );
 }
 
 const field = "mt-2 w-full rounded-lg border bg-card px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20";
@@ -42,13 +52,6 @@ function Contact() {
     setPreview(Object.keys(e).length ? null : data);
   }
 
-  const F = ({ name, label, required, children }: { name: string; label: string; required?: boolean; children: React.ReactNode }) => (
-    <label className="block text-sm">
-      <span className="font-medium">{label}{required && <span className="text-primary-deep"> *</span>}</span>
-      {children}
-      {errors[name] && <span className="mt-1 block text-xs text-destructive">{errors[name]}</span>}
-    </label>
-  );
   const cls = (n: string) => cn(field, errors[n] ? "border-destructive" : "border-input");
 
   return (
@@ -99,30 +102,30 @@ function Contact() {
             </div>
           ) : (
             <form noValidate onSubmit={onSubmit} className="grid gap-6 rounded-[1.5rem] border border-border bg-card p-8 shadow-soft md:grid-cols-2 md:p-10">
-              <F name="name" label="Full Name" required><input name="name" className={cls("name")} autoComplete="name" /></F>
-              <F name="company" label="Company Name"><input name="company" className={cls("company")} autoComplete="organization" /></F>
-              <F name="email" label="Email Address" required><input name="email" type="email" className={cls("email")} autoComplete="email" /></F>
-              <F name="phone" label="Phone Number"><input name="phone" type="tel" className={cls("phone")} autoComplete="tel" /></F>
-              <F name="product" label="Product Interest" required>
+              <F errors={errors} name="name" label="Full Name" required><input name="name" className={cls("name")} autoComplete="name" /></F>
+              <F errors={errors} name="company" label="Company Name"><input name="company" className={cls("company")} autoComplete="organization" /></F>
+              <F errors={errors} name="email" label="Email Address" required><input name="email" type="email" className={cls("email")} autoComplete="email" /></F>
+              <F errors={errors} name="phone" label="Phone Number"><input name="phone" type="tel" className={cls("phone")} autoComplete="tel" /></F>
+              <F errors={errors} name="product" label="Product Interest" required>
                 <select name="product" defaultValue="" className={cls("product")}>
                   <option value="" disabled>Select a size</option>
                   <option>6 oz</option><option>6.5 oz</option><option>Both sizes</option>
                 </select>
               </F>
-              <F name="beverage" label="Beverage Type" required>
+              <F errors={errors} name="beverage" label="Beverage Type" required>
                 <select name="beverage" defaultValue="" className={cls("beverage")}>
                   <option value="" disabled>Select a type</option>
                   <option>Hot beverages</option><option>Cold beverages</option><option>Both</option>
                 </select>
               </F>
-              <F name="quantity" label="Estimated Quantity"><input name="quantity" className={cls("quantity")} placeholder="e.g. 10,000 cups" /></F>
-              <F name="branding" label="Custom Branding">
+              <F errors={errors} name="quantity" label="Estimated Quantity"><input name="quantity" className={cls("quantity")} placeholder="e.g. 10,000 cups" /></F>
+              <F errors={errors} name="branding" label="Custom Branding">
                 <select name="branding" defaultValue="" className={cls("branding")}>
                   <option value="">Not sure yet</option><option>Plain cups</option><option>Printed with my brand</option>
                 </select>
               </F>
-              <div className="md:col-span-2"><F name="location" label="Delivery Location"><input name="location" className={cls("location")} placeholder="City or emirate" /></F></div>
-              <div className="md:col-span-2"><F name="notes" label="Additional Requirements"><textarea name="notes" rows={4} className={cls("notes")} /></F></div>
+              <div className="md:col-span-2"><F errors={errors} name="location" label="Delivery Location"><input name="location" className={cls("location")} placeholder="City or emirate" /></F></div>
+              <div className="md:col-span-2"><F errors={errors} name="notes" label="Additional Requirements"><textarea name="notes" rows={4} className={cls("notes")} /></F></div>
               <div className="md:col-span-2 flex flex-wrap items-center justify-between gap-4">
                 <p className="text-xs text-muted-foreground">Demonstration form — nothing is sent or stored.</p>
                 <Button type="submit" variant="gold" size="xl">Preview enquiry</Button>
