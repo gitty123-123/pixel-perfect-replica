@@ -23,7 +23,7 @@ const REQUIRED = ["name", "email", "product", "beverage"];
 function validateEnquiry(data: Record<string, string>): Errors {
   const e: Errors = {};
   for (const k of REQUIRED) if (!data[k]?.trim()) e[k] = "This field is required.";
-  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Please enter a valid email address.";
+  if (data['email'] && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data['email'])) e['email'] = "Please enter a valid email address.";
   return e;
 }
 
